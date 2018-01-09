@@ -7,7 +7,7 @@
 </head>
 <body>
 
-
+<!-- 'data-' attributes are generic tags, so if you want to add a random attribute put it behing a data- key -->
   <div class="keys">
     <div data-key="65" class="key">
       <kbd>A</kbd>
@@ -58,7 +58,31 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if (!audio) {
+      return;
+    }
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+    console.log(key);
+  }
 
+  function removeTransition(e) {
+    if (e.propertyName !== 'transform') {
+      return;
+    }
+    this.classList.remove('playing');
+  }
+  const keys = document.querySelectorAll('.key');
+  keys.forEach((key) => 
+    key.addEventListener('transitionend', removeTransition)
+  );
+
+    window.addEventListener('keydown', playSound);
 </script>
 
 
